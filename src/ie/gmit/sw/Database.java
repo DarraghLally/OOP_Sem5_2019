@@ -3,6 +3,7 @@ package ie.gmit.sw;
 import java.util.*;
 
 public class Database {
+	
 	private Map<Language, Map<Integer, LanguageEntry>> db = new TreeMap<>();
 	
 	public void add(CharSequence s, Language lang) {
@@ -38,8 +39,13 @@ public class Database {
 	
 	public Map<Integer, LanguageEntry> getTop(int max, Language lang) {
 		Map<Integer, LanguageEntry> temp = new TreeMap<>();
+		//1
 		List<LanguageEntry> les = new ArrayList<>(db.get(lang).values());
 		Collections.sort(les);
+		
+		//2
+		//ArrayList<LanguageEntry> les = new ArrayList<LanguageEntry>(db.get(lang).values());
+		//Collections.sort(les, new SortFrequency());
 		
 		int rank = 1;
 		for (LanguageEntry le : les) {
