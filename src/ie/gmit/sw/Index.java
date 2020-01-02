@@ -4,6 +4,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * @author Darragh Lally - G00220290
@@ -58,7 +60,7 @@ public class Index {
 	 * 		1.a) wili-2018-Large-117500-Edited.txt
 	 * 		1.b) wili-2018-Small-11750-Edited.txt
 	 * 
-	 * 2) Query file location - test docs packaged in project
+	 * 2) Query file location - test files packaged in project
 	 * 
 	 * It then passes quere into analyseQuery() method from class Parser
 	 * 
@@ -80,15 +82,21 @@ public class Index {
 			}
 		} while (!isFound);
 
-		Parser p = new Parser(fileIn, kmerSize);
+		BlockingQueue<Query> queue = new ArrayBlockingQueue<Query>(20);
+		Parser p = new Parser(fileIn, queue);
 		Database db = new Database();
-		p.setDb(db);
+		ComputeQuery cq = new ComputeQuery(db, queue, kmerSize);
+
 		Thread t = new Thread(p);
+		
+		Thread c = new Thread(cq);
+		
 		t.start();
+		c.start();
 		try {
 			t.join();
+			c.join();
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		db.resize(300);
@@ -118,7 +126,7 @@ public class Index {
 			System.out.println("Error - File to String ");
 		}
 		// Test file
-		p.analyseQuery(query);
+		cq.analyseQuery(query);
 	}
 
 }

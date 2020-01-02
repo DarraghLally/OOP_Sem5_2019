@@ -1,10 +1,11 @@
 package ie.gmit.sw;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Database {
 	
-	private Map<Language, Map<Integer, LanguageEntry>> db = new TreeMap<>();
+	private Map<Language, Map<Integer, LanguageEntry>> db = new ConcurrentHashMap<>();
 	
 	public void add(CharSequence s, Language lang) {
 		int kmer = s.hashCode();
@@ -23,7 +24,7 @@ public class Database {
 		if (db.containsKey(lang)) {
 			langDb = db.get(lang);
 		}else {
-			langDb = new TreeMap<Integer, LanguageEntry>();
+			langDb = new ConcurrentHashMap<Integer, LanguageEntry>();
 			db.put(lang, langDb);
 		}
 		return langDb;
@@ -38,7 +39,7 @@ public class Database {
 	}
 	
 	public Map<Integer, LanguageEntry> getTop(int max, Language lang) {
-		Map<Integer, LanguageEntry> temp = new TreeMap<>();
+		Map<Integer, LanguageEntry> temp = new ConcurrentHashMap<>();
 		//1
 		List<LanguageEntry> les = new ArrayList<>(db.get(lang).values());
 		Collections.sort(les);
