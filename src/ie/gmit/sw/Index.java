@@ -1,38 +1,70 @@
 package ie.gmit.sw;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Scanner;
+
 /**
  * @author Darragh Lally - G00220290
  * @version 1.0
  * @since 1.8
- *
- *
- *This Class - Runner - is just used to call the show method from <b>Index.java<\b>
- *
- *@see Index
+ * 
+ * This class is where the user is prompted for the 
+ * language dataset location and the query file location 
+ * in order for it to process a result
  */
-public class Runner {
+public class Index {
+	
+	//Variables
+	private int kmerSize = 4;
+	private volatile boolean isFound = true;
+	private String fileIn;
+	private String query;
+	File dbFile;
+	private Scanner s = new Scanner(System.in); // Scanner, reading user menu choice
+	// public Parser p = new Parser(); // Instance of Parser class
 
-	public static void main(String[] args) throws Throwable {
-		new Index().show();
-	}
-		/*
-		int kmerSize = 4;
-		boolean isFound = false;
-		String fileIn;
-		String query;
+	/**
+	 *
+	 * @throws Exception
+	 * 
+	 *  method show() displays header and calls handle method, sets keepGoing to 
+	 * false when process is complete
+	 */ 
+	public void show() throws Exception {
+		while (isFound) {
+			showHeader();
+			handle();
+			isFound = false;
+		}
+	}// show()
 
-		File dbFile;
-
-		@SuppressWarnings("resource")
-		Scanner s = new Scanner(System.in);
-
-		ComputeQuery cq = new ComputeQuery();
+	/**
+	 * Prints header to console
+	 */
+	private void showHeader() {
 		System.out.println("*********************************************************");
 		System.out.println("*	GMIT - Dept. Comp Science & Applied Physics	*");
 		System.out.println("*							*");
 		System.out.println("*		Text Language Detector			*");
 		System.out.println("*							*");
 		System.out.println("*********************************************************");
+	}// showHeader
+
+	/**
+	 * Asks for user input for the following:
+	 * 1) Language Dataset Location - Packaged in project
+	 * 		1.a) wili-2018-Large-117500-Edited.txt
+	 * 		1.b) wili-2018-Small-11750-Edited.txt
+	 * 
+	 * 2) Query file location - test docs packaged in project
+	 * 
+	 * It then passes quere into analyseQuery() method from class Parser
+	 * 
+	 * @see Parser
+	 */
+	private void handle() {
 		do {
 			// Enter File location
 			System.out.println("Enter Language Dataset Location: ");
@@ -53,7 +85,12 @@ public class Runner {
 		p.setDb(db);
 		Thread t = new Thread(p);
 		t.start();
-		t.join();
+		try {
+			t.join();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		db.resize(300);
 
 		do {
@@ -82,7 +119,6 @@ public class Runner {
 		}
 		// Test file
 		p.analyseQuery(query);
-
 	}
-	*/
+
 }

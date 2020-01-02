@@ -1,10 +1,10 @@
 package ie.gmit.sw;
 
-import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -22,7 +22,7 @@ public class Parser implements Runnable {
 		this.k = k;
 	}
 
-	//Accessor Methods
+	// Accessor Methods
 	public Database getDb() {
 		return db;
 	}
@@ -30,7 +30,7 @@ public class Parser implements Runnable {
 	public void setDb(Database db) {
 		this.db = db;
 	}
-	
+
 	private void parse(String text, String lang, int... ks) {
 		Language language = Language.valueOf(lang);
 		for (int i = 0; i <= text.length() - k; i++) {
@@ -51,7 +51,7 @@ public class Parser implements Runnable {
 				if (record.length != 2) {
 					continue;
 				}
-				//put into a blocking queue - 
+				// put into a blocking queue -
 				parse(record[0], record[1]);
 			}
 			br.close();
@@ -60,11 +60,12 @@ public class Parser implements Runnable {
 		}
 	}// run
 
-	//analyseQuery() - Takes in a string to be tested and outputs a language that matches with its current DB.
+	// analyseQuery() - Takes in a string to be tested and outputs a language that
+	// matches with its current DB.
 	public void analyseQuery(String s) {
 		int frequency = 1;
 		Map<Integer, LanguageEntry> queryKmer = new TreeMap<>();
-		Map<Integer, LanguageEntry> sortedMap = new TreeMap<>();	
+		Map<Integer, LanguageEntry> sortedMap = new TreeMap<>();
 
 		for (int i = 0; i <= s.length() - k; i++) {
 			CharSequence kmer = s.subSequence(i, i + k);
@@ -73,25 +74,26 @@ public class Parser implements Runnable {
 			if (queryKmer.containsKey(kmerHash)) {
 				frequency += queryKmer.get(kmerHash).getFrequency();
 			}
-			
+
 			queryKmer.put(kmerHash, new LanguageEntry(kmerHash, frequency));
-			//System.out.println("DEGUB: " + kmerHash + "   " + frequency);
-			//System.out.println("DEGUB: " + queryKmer);
+			// System.out.println("DEGUB: " + kmerHash + " " + frequency);
+			// System.out.println("DEGUB: " + queryKmer);
 		}
-		
-		//Sort and Rank
-		//query map (queryKmer) - into sorted list (l)
+
+		// Sort and Rank
+		// query map (queryKmer) - into sorted list (l)
 		List<LanguageEntry> l = new ArrayList<LanguageEntry>(queryKmer.values());
-		
+
 		int rank = 1;
 		for (LanguageEntry le : l) {
 			le.setRank(rank);
-			sortedMap.put(le.getKmer(), le);			
-			if (rank == 300) break;
+			sortedMap.put(le.getKmer(), le);
+			if (rank == 300)
+				break;
 			rank++;
 		}
-		//Output first Language in map choosen by process - Database.java
-		System.out.println("Language: " + db.getLanguage(sortedMap));
+		// Output first Language in map choosen by process - Database.java
+		System.out.println("The text appears to be written in: " + db.getLanguage(sortedMap) + "\n\n");
 	}
 
 }
