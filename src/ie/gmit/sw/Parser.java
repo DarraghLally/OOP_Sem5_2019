@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -23,6 +22,7 @@ public class Parser implements Runnable {
 		this.k = k;
 	}
 
+	//Accessor Methods
 	public Database getDb() {
 		return db;
 	}
@@ -30,24 +30,29 @@ public class Parser implements Runnable {
 	public void setDb(Database db) {
 		this.db = db;
 	}
+	
+	private void parse(String text, String lang, int... ks) {
+		Language language = Language.valueOf(lang);
+		for (int i = 0; i <= text.length() - k; i++) {
+			CharSequence kmer = text.subSequence(i, i + k);
+			db.add(kmer, language);
+		}
+	}// parse
 
 	@Override
 	public void run() {
 
-		//int count = 0;
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 			String line = null;
 
 			while ((line = br.readLine()) != null) {
-				//count++;
 				String[] record = line.trim().split("@");
 				if (record.length != 2) {
 					continue;
 				}
+				//put into a blocking queue - 
 				parse(record[0], record[1]);
-				// System.out.println("DEBUG: " +record[0] + " " + record[1] + " - Count: " +
-				// count);
 			}
 			br.close();
 		} catch (Exception e) {
@@ -55,15 +60,7 @@ public class Parser implements Runnable {
 		}
 	}// run
 
-	private void parse(String text, String lang, int... ks) {
-		Language language = Language.valueOf(lang);
-		// System.out.println("In parse()");
-		for (int i = 0; i <= text.length() - k; i++) {
-			CharSequence kmer = text.subSequence(i, i + k);
-			db.add(kmer, language);
-		}
-	}// parse
-
+	//analyseQuery() - Takes in a string to be tested and outputs a language that matches with its current DB.
 	public void analyseQuery(String s) {
 		int frequency = 1;
 		Map<Integer, LanguageEntry> queryKmer = new TreeMap<>();
@@ -93,9 +90,8 @@ public class Parser implements Runnable {
 			if (rank == 300) break;
 			rank++;
 		}
-		
+		//Output first Language in map choosen by process - Database.java
 		System.out.println("Language: " + db.getLanguage(sortedMap));
-		
 	}
 
 }

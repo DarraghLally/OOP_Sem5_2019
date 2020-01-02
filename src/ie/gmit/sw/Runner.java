@@ -12,10 +12,9 @@ public class Runner {
 		int kmerSize = 4;
 		boolean isFound = false;
 		String fileIn;
-		String query;
-		
-		File queryFile;
+		String query;;
 		File dbFile;
+		@SuppressWarnings("resource")
 		Scanner s = new Scanner(System.in);
 		
 		//Language file
@@ -59,11 +58,14 @@ public class Runner {
 			}
 		} while (!isFound);
 		
+		//Clear query
 		query="";
+		
+		//Turn file into string
 		try {
 			query = new String(Files.readAllBytes(Paths.get(fileIn)));
-		} catch (Exception e) {
-			System.out.println("Error - Runner");
+		} catch (Exception e) {						
+			System.out.println("Error - File to String ");
 		}
 		//Test file
 		p.analyseQuery(query);
