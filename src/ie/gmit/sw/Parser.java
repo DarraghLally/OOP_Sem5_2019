@@ -6,12 +6,13 @@ import java.io.InputStreamReader;
 import java.util.concurrent.BlockingQueue;
 
 /**
+ * This class contains a method run in which we read in the dataset
  * 
  * @author Darragh Lally, G00220290
  * @version 1.0
  * @since Java 1.8
  *
- *This class contains a method run in which we read in the dataset
+ * @see Runnable
  */
 public class Parser implements Runnable {
 
@@ -21,11 +22,8 @@ public class Parser implements Runnable {
 
 	/**
 	 * Constructor for class Parser
-	 * @param file
-	 * @param q
-	 * 
-	 * file = Wili language dataset
-	 * q = BlockingQueue 
+	 * @param file Wili language dataset
+	 * @param q BlockingQueue 
 	 */
 	public Parser(String file, BlockingQueue<Query> q) {
 		super();
@@ -37,7 +35,6 @@ public class Parser implements Runnable {
 	 * Method Run: reads dataset file in and splits each line at the '@' symbol and saves either side of
 	 * it into their own String variables (1. Language Text |2. Language Type) then puts them into 
 	 * the BlockingQueue for use on the consumer side.
-	 * 
 	 * The last element added to the queue is what is used to stop the run method in ComputeQuery ie our Poison
 	 * 
 	 * @see ComputeQuery

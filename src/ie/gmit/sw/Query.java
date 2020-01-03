@@ -1,20 +1,20 @@
 package ie.gmit.sw;
 
 /**
- * 
+ * This class is used to so we can pass objects into the blocking queue<br>
+ * 1) Dataset<br>
+ * 2) Poison<br>
  * @author Darragh Lally, G00220290
  * @version 1.0
  * @since Java 1.8
  * 
- * This class is used to so we can pass objects into the blocking queue
- * 1) Dataset
- * 2) Poison
- *
  */
 public class Query {
+	//Variables
 	private String text;
 	private String Language;
 	
+	//Accessor methods
 	public String getText() {
 		return text;
 	}
@@ -33,11 +33,9 @@ public class Query {
 
 	/**
 	 * Constructor takes in the Langauge Text and Language Type
-	 * @param text
-	 * @param language
-	 * 
-	 * text = Language text, ie before the '@' symbol from Dataset
-	 * language = Language type, ie after the '@' symbol 
+	 * @param text Language text, ie before the '@' symbol from Dataset
+	 * @param language Language type, ie after the '@' symbol 
+
 	 */
 	public Query(String text, String language) {
 		super();

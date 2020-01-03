@@ -7,14 +7,13 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 
+ * This class is the 'consumer' and implements Runnable. It holds methods that parses
+ * the user query file into kmers and adds them to a map for comparison
+ * to the language dataset.
+ *
  * @author Darragh Lally, G00220290
  * @version 1.0
  * @since Java 1.8
- *
- *This class is the 'consumer' and implements Runnable. It holds methods that parses
- * the user query file into kmers and adds them to a map for comparison
- * to the language dataset.
  *
  *@see Runnable
  *
@@ -53,13 +52,15 @@ public class ComputeQuery implements Runnable {
 
 	/**
 	 * Constructor - taking in a database, the blocking queue and the kmer size
-	 * @param db 
-	 * @param queue
-	 * @param k
 	 * 
 	 * db = database
 	 * queue = blocking queue
 	 * k = kmer/ngram size
+	 * 
+	 * @param db 
+	 * @param queue
+	 * @param k
+	 * 
 	 */
 	public ComputeQuery(Database db, BlockingQueue<Query> queue, int k) {
 		super();
@@ -70,9 +71,12 @@ public class ComputeQuery implements Runnable {
 
 	/**
 	 * This method takes in the the query and breaks it up into kmers of size k
+	 * 
+	 * q = query text
+	 *  
 	 * @param q
 	 * @param ks
-	 * q = query text
+	 *
 	 */
 	private void parse(Query q, int... ks) {
 		Language language = Language.valueOf(q.getLanguage());
@@ -87,7 +91,7 @@ public class ComputeQuery implements Runnable {
 	 * This method analyseQuery takes in the query text in the form of a string (converted from file to 
 	 * string in HandleFiles), analyses the query map against the dataset map and outputs a 
 	 * language that has the smallest distance metric
-	 * @param s
+	 * @param s query to be checked
 	 * 
 	 * @see HandleFiles
 	 */

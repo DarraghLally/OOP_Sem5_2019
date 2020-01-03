@@ -8,14 +8,14 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * @author Darragh Lally, G00220290
- * @version 1.0
- * @since Java 1.8
- * 
  * This class is where the user is prompted for the 
  * language dataset location (wili - short or long included in project) and the 
  * query file location (test files included in project) 
  * in order for it to process a result
+ * 
+ * @author Darragh Lally, G00220290
+ * @version 1.0
+ * @since Java 1.8
  * 
  * @see ComputeQuery - for analyseQuery method
  */
@@ -26,15 +26,15 @@ public class HandleFiles {
 	private volatile boolean isFound = true; //volatile so it wont be cached
 	private String fileIn; //to hold dataset
 	private String query; //to hold query
-	File dbFile; //for fileIn
+	private File dbFile; //for fileIn
 	private Scanner s = new Scanner(System.in); //For user input
 	
 	/**
-	 *
-	 * @throws Exception
-	 * 
-	 *  method show() displays header and calls handle method, sets keepGoing to 
+	 * Method show() displays header and calls handle method, sets keepGoing to 
 	 * false when process is complete therefor ending the program
+	 * 
+	 * @throws Exception
+	 *
 	 */ 
 	public void show() throws Exception {
 		while (isFound) {
@@ -57,13 +57,11 @@ public class HandleFiles {
 	}// showHeader
 
 	/**
-	 * Asks for user input for the following:
-	 * 1) Language Dataset Location - Packaged in project
-	 * 		1.a) wili-2018-Large-117500-Edited.txt
-	 * 		1.b) wili-2018-Small-11750-Edited.txt
-	 * 
-	 * 2) Query file location - test files packaged in project
-	 * 
+	 * Asks for user input for the following: <br>
+	 * 1) Language Dataset Location - Packaged in project <br>
+	 * 		1.a) wili-2018-Large-117500-Edited.txt <br>
+	 * 		1.b) wili-2018-Small-11750-Edited.txt <br>
+	 * 2) Query file location - test files packaged in project<br>
 	 * It then passes quere into analyseQuery() method from class Parser
 	 * 
 	 * @see Parser

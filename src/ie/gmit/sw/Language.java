@@ -1,13 +1,10 @@
 package ie.gmit.sw;
 
 /**
- * 
+ * This emun matches the one word varient of a language type to its two word equivilant
  * @author Darragh Lally, G00220290
  * @version 1.0
  * @since Java 1.8
- * 
- * This emun matches the one word varient of a language type to its two word equivilant
- *
  */
 public enum Language {
 	Achinese ("Achinese"),
