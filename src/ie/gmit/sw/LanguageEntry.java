@@ -1,16 +1,38 @@
 package ie.gmit.sw;
 
+/**
+ * 
+ * @author Darragh Lally, G00220290
+ * @version 1.0
+ * @since Java 1.8
+ * 
+ * This class is used to creat an entry, by passing the hashed kmer, and its frequency
+ * LanguageEntry inherites from Comparable
+ * 
+ * @see Comparable
+ *
+ */
 public class LanguageEntry implements Comparable<LanguageEntry> {
-	private int kmer;
-	private int frequency;
-	private int rank;
+	//Variables
+	private int kmer; //to hold the hashed kmer
+	private int frequency; //to hold its frequency
+	private int rank; //to hold a rank for its placein the queue
 
+	/**
+	 * Constructor takes two arguments
+	 * @param kmer
+	 * @param frequency
+	 * 
+	 * kmer = hashed version of the string kmer
+	 * frequency = a total of its occurance in the file
+	 */
 	public LanguageEntry(int kmer, int frequency) {
 		super();
 		this.kmer = kmer;
 		this.frequency = frequency;
 	}
 
+	//Accessor methods
 	public int getKmer() {
 		return kmer;
 	}
@@ -35,6 +57,9 @@ public class LanguageEntry implements Comparable<LanguageEntry> {
 		this.rank = rank;
 	}
 
+	/**
+	 * Overridden compareTo, compares this entries frequency to the next
+	 */
 	@Override
 	public int compareTo(LanguageEntry next) {
 		return - Integer.compare(frequency, next.getFrequency());

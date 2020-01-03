@@ -8,12 +8,13 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * @author Darragh Lally - G00220290
+ * @author Darragh Lally, G00220290
  * @version 1.0
  * @since Java 1.8
  * 
  * This class is where the user is prompted for the 
- * language dataset location (wili - short or long included in project) and the query file location (test files included in project) 
+ * language dataset location (wili - short or long included in project) and the 
+ * query file location (test files included in project) 
  * in order for it to process a result
  * 
  * @see ComputeQuery - for analyseQuery method
@@ -89,12 +90,15 @@ public class HandleFiles {
 
 		Thread t = new Thread(p); //create producer thread		
 		Thread c = new Thread(cq); //create consumer thread
+		Thread c1 = new Thread(cq); //Another consumer thread
 		
 		t.start(); //Start threads
 		c.start();
+		c1.start();
 		try {
 			t.join();
 			c.join();
+			c1.join();
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -111,7 +115,7 @@ public class HandleFiles {
 				System.out.println("\nNo File - Try again");
 			} else { //If query file found set boolean, inform user
 				isFound = true;
-				System.out.println("\nProcessing... Standby....");
+				System.out.println("Processing... Standby....");
 			}
 		} while (!isFound);// Keep going until valid query file entered
 

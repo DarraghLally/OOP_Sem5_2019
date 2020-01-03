@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 
- * @author Darragh Lally
+ * @author Darragh Lally, G00220290
  * @version 1.0
  * @since Java 1.8
  *
@@ -120,7 +120,7 @@ public class ComputeQuery implements Runnable {
 			rank++; //increase rank
 		}
 		// Output first Language in map choosen by process - Database.java
-		System.out.println("The text appears to be written in: " + db.getLanguage(sortedMap) + "\n\n");
+		System.out.println("\nThe text appears to be written in: " + db.getLanguage(sortedMap) + "\n\n");
 	}
 
 	/**
