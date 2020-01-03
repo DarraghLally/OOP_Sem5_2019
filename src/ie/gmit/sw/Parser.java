@@ -5,6 +5,13 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * 
+ * @author Darragh Lally
+ * @version 1.0
+ * @since Java 1.8
+ *
+ */
 public class Parser implements Runnable {
 
 	// Variables

@@ -10,29 +10,30 @@ import java.util.concurrent.BlockingQueue;
 /**
  * @author Darragh Lally - G00220290
  * @version 1.0
- * @since 1.8
+ * @since Java 1.8
  * 
  * This class is where the user is prompted for the 
- * language dataset location and the query file location 
+ * language dataset location (wili - short or long included in project) and the query file location (test files included in project) 
  * in order for it to process a result
+ * 
+ * @see ComputeQuery - for analyseQuery method
  */
-public class Index {
+public class HandleFiles {
 	
 	//Variables
-	private int kmerSize = 4;
-	private volatile boolean isFound = true;
-	private String fileIn;
-	private String query;
-	File dbFile;
-	private Scanner s = new Scanner(System.in); // Scanner, reading user menu choice
-	// public Parser p = new Parser(); // Instance of Parser class
-
+	private int kmerSize = 4; //Size of kmer/ngram
+	private volatile boolean isFound = true; //volatile so it wont be cached
+	private String fileIn; //to hold dataset
+	private String query; //to hold query
+	File dbFile; //for fileIn
+	private Scanner s = new Scanner(System.in); //For user input
+	
 	/**
 	 *
 	 * @throws Exception
 	 * 
 	 *  method show() displays header and calls handle method, sets keepGoing to 
-	 * false when process is complete
+	 * false when process is complete therefor ending the program
 	 */ 
 	public void show() throws Exception {
 		while (isFound) {
@@ -72,34 +73,32 @@ public class Index {
 			System.out.println("Enter Language Dataset Location: ");
 			fileIn = s.next();
 			dbFile = new File(fileIn);
-			// Error Handling
-			if (dbFile.length() == 0) {
+			if (dbFile.length() == 0) { // Error Handling
 				isFound = false;
 				System.out.println("No File");
-			} else {
+			} else { // If there is a database - set boolean, inform user
 				isFound = true;
 				System.out.println("Creating Reference Database from '" + fileIn + "'....\n");
 			}
-		} while (!isFound);
+		} while (!isFound); //keep going - until user enters correct file
 
-		BlockingQueue<Query> queue = new ArrayBlockingQueue<Query>(20);
-		Parser p = new Parser(fileIn, queue);
-		Database db = new Database();
-		ComputeQuery cq = new ComputeQuery(db, queue, kmerSize);
+		BlockingQueue<Query> queue = new ArrayBlockingQueue<Query>(20); //Create ArrayBlockingQueue with capacity of 20
+		Parser p = new Parser(fileIn, queue); //instance of parser with dataset and ABQ
+		Database db = new Database(); //instance of database
+		ComputeQuery cq = new ComputeQuery(db, queue, kmerSize); //instance of ComputeQuery with database(dataset), ABQ, and size of kmer 
 
-		Thread t = new Thread(p);
+		Thread t = new Thread(p); //create producer thread		
+		Thread c = new Thread(cq); //create consumer thread
 		
-		Thread c = new Thread(cq);
-		
-		t.start();
+		t.start(); //Start threads
 		c.start();
 		try {
 			t.join();
 			c.join();
-		} catch (InterruptedException e1) {
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		db.resize(300);
+		db.resize(300); //Resize DB
 
 		do {
 			// Enter Query location
@@ -110,11 +109,11 @@ public class Index {
 			if (dbFile.length() == 0) {
 				isFound = false;
 				System.out.println("\nNo File - Try again");
-			} else {
+			} else { //If query file found set boolean, inform user
 				isFound = true;
 				System.out.println("\nProcessing... Standby....");
 			}
-		} while (!isFound);
+		} while (!isFound);// Keep going until valid query file entered
 
 		// Clear query
 		query = "";
@@ -125,7 +124,7 @@ public class Index {
 		} catch (Exception e) {
 			System.out.println("Error - File to String ");
 		}
-		// Test file
+		// Test file by passing into analyseQuery()
 		cq.analyseQuery(query);
 	}
 
